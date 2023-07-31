@@ -15,9 +15,10 @@ export function NewTaskRequest (title,description){
     let  PostBody = {"title":title, "description":description, "status": "new"}
 
     return axios.post(URL,PostBody,AxiosHeader).then((res)=>{
+        store.dispatch(HideLoader());
         if (res.status===200){
             SuccessToast("New Task Generated")
-            store.dispatch(HideLoader());
+
             return true;
         }else {
             ErrorToast("Something Wrong")
