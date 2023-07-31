@@ -2,9 +2,10 @@ import React, {Fragment, useRef} from 'react';
 import {Container, Row} from "react-bootstrap";
 import {ErrorToast, IsEmpty} from "../../helper/FormHelper";
 import {useNavigate} from "react-router-dom";
+import {NewTaskRequest} from "../../APIRequest/APIRequest";
 
 const Create = () => {
-    let titleRef,descriptionRef=useRef();
+    let titleRef,descriptionRef = useRef();
     let navigate= useNavigate();
 
     const CreateNew =()=>{
@@ -23,13 +24,7 @@ const Create = () => {
                  }
              })
          }
-
-         })
-         }
-    }
-
-
-
+        }
 
     return (
         <Fragment>
@@ -50,9 +45,8 @@ const Create = () => {
                     </div>
                 </Row>
             </Container>
-
         </Fragment>
     );
-};
+ };
 
 export default Create;

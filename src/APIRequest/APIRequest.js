@@ -2,13 +2,33 @@ import axios from "axios";
 import {ErrorToast, SuccessToast} from "../helper/FormHelper";
 import store from "../redux/store/store";
 import {HideLoader, ShowLoader} from "../redux/state-slice/setting-slice";
-import {setToken, setUserDetails} from "../helper/SessionHelper";
+import {getToken, setToken, setUserDetails} from "../helper/SessionHelper";
 // import React from "react";
 
 const BaseURL="https://task-manager-power-ecare.onrender.com/api/v1"
 
+const AxiosHeader= {headers:{"token":getToken()}};
 
+export function NewTaskRequest (title,description){
+    store.dispatch(ShowLoader());
+    let URL= BaseURL+"/createTask"
+    let  PostBody = {"title":title, "description":description, "status": "new"}
 
+    return axios.post(URL,PostBody,AxiosHeader).then((res)=>{
+        if (res.status===200){
+            SuccessToast("New Task Generated")
+            return false;
+        }else {
+            ErrorToast("Something Wrong")
+            return false;
+        }
+    }).catch((err)=>{
+        store.dispatch(HideLoader());
+        ErrorToast("Something Wrong");
+        return false;
+    })
+
+}
 
 export function LoginRequest(email,password ){
     store.dispatch(ShowLoader());
