@@ -3,6 +3,7 @@ import {ErrorToast, SuccessToast} from "../helper/FormHelper";
 import store from "../redux/store/store";
 import {HideLoader, ShowLoader} from "../redux/state-slice/setting-slice";
 import {getToken, setToken, setUserDetails} from "../helper/SessionHelper";
+import {SetCanceledTask, SetCompletedTask, SetNewTask, SetProgressTask} from "../redux/state-slice/task-slice";
 // import React from "react";
 
 const BaseURL="https://task-manager-power-ecare.onrender.com/api/v1"
@@ -12,12 +13,12 @@ const AxiosHeader= {headers:{"token":getToken()}};
 export function NewTaskRequest (title,description){
     store.dispatch(ShowLoader());
     let URL= BaseURL+"/createTask"
-    let  PostBody = {"title":title, "description":description, "status": "new"}
+    let  PostBody = {"title":title, "description":description, "status": "New"}
 
     return axios.post(URL,PostBody,AxiosHeader).then((res)=>{
         store.dispatch(HideLoader());
         if (res.status===200){
-            SuccessToast("New Task Generated")
+            SuccessToast("New Task Created")
 
             return true;
         }else {
@@ -31,6 +32,50 @@ export function NewTaskRequest (title,description){
     })
 
 }
+
+
+export function TaskListByStatus(Status){
+    store.dispatch(ShowLoader())
+    let URL=BaseURL+"/listTaskByStatus/"+Status;
+    axios.get(URL,AxiosHeader).then((res)=>{
+        store.dispatch(HideLoader())
+        if(res.status===200){
+            if(Status==="New"){
+                store.dispatch(SetNewTask(res.data['data']))
+            }
+            else if(Status==="Completed"){
+                store.dispatch(SetCompletedTask(res.data['data']))
+            }
+            else if(Status==="Canceled"){
+                store.dispatch(SetCanceledTask(res.data['data']))
+            }
+            else if(Status==="Progress"){
+
+                store.dispatch(SetProgressTask(res.data['data']))
+            }
+        }
+        else{
+            ErrorToast("Something Went Wrong")
+        }
+    }).catch((err)=>{
+        ErrorToast("Something Went Wrong")
+        store.dispatch(HideLoader())
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function LoginRequest(email,password ){
     store.dispatch(ShowLoader());
