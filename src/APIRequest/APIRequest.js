@@ -4,6 +4,7 @@ import store from "../redux/store/store";
 import {HideLoader, ShowLoader} from "../redux/state-slice/setting-slice";
 import {getToken, setToken, setUserDetails} from "../helper/SessionHelper";
 import {SetCanceledTask, SetCompletedTask, SetNewTask, SetProgressTask} from "../redux/state-slice/task-slice";
+import {SetSummary} from "../redux/state-slice/summary-slice";
 // import React from "react";
 
 const BaseURL="https://task-manager-power-ecare.onrender.com/api/v1"
@@ -64,7 +65,23 @@ export function TaskListByStatus(Status){
 }
 
 
+export function SummaryRequest(){
+    store.dispatch(ShowLoader())
+    let URL=BaseURL+"/taskStatusCount";
+   return  axios.get(URL,AxiosHeader).then((res)=>{
+        store.dispatch(HideLoader())
+        if(res.status===200){
+            store.dispatch(SetSummary(res.data['data']))
+        }
+        else{
+            ErrorToast("Something Went Wrong")
+        }
+    }).catch((err)=>{
+        ErrorToast("Something Went Wrong")
+        store.dispatch(HideLoader())
+    });
 
+}
 
 
 
