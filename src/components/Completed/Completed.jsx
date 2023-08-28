@@ -4,6 +4,7 @@ import {AiOutlineCalendar, AiOutlineDelete, AiOutlineEdit} from "react-icons/ai"
 import {TaskListByStatus} from "../../APIRequest/APIRequest";
 import {useSelector} from "react-redux";
 import {DeleteToDO} from "../../helper/DeleteAlert";
+import {UpdateToDO} from "../../helper/UpdateAlert";
 
 const Completed = () => {
     useEffect(()=>{
@@ -18,7 +19,13 @@ const Completed = () => {
             }
         })
     }
-
+    const StatusChangeItem =(id, status)=>{
+        UpdateToDO(id,status).then((result)=>{
+            if (result===true){
+                TaskListByStatus("Completed")
+            }
+        })
+    }
     return (
         <Fragment>
             <Container fluid={true} className="content-body">
@@ -49,7 +56,7 @@ const Completed = () => {
                                         <p className="animated fadeInUp">{item.description}</p>
                                         <p className="m-0 animated fadeInUp p-0">
                                             <AiOutlineCalendar/>{item.createDate}
-                                            <a  className="icon-nav text-primary mx-1"><AiOutlineEdit /></a>
+                                            <a  onClick={StatusChangeItem.bind(this,item._id,item.status)} className="icon-nav text-primary mx-1"><AiOutlineEdit /></a>
                                             <a onClick={DeleteItem.bind(this,item._id)} className="icon-nav text-danger mx-1"><AiOutlineDelete /></a>
                                             <a className="badge float-end bg-success">{item.status}</a>
                                         </p>

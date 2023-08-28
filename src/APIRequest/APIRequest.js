@@ -104,7 +104,25 @@ export function DeleteRequest(id){
 }
 
 
-
+export function UpdateStatusRequest(id,status){
+    store.dispatch(ShowLoader())
+    let URL=BaseURL+"/updateTaskStatus/"+id+"/"+status;
+    return axios.get(URL,AxiosHeader).then((res)=>{
+        store.dispatch(HideLoader())
+        if(res.status===200){
+            SuccessToast("Status Updated")
+            return true;
+        }
+        else{
+            ErrorToast("Something Went Wrong")
+            return false;
+        }
+    }).catch((err)=>{
+        ErrorToast("Something Went Wrong")
+        store.dispatch(HideLoader())
+        return false;
+    });
+}
 
 
 
