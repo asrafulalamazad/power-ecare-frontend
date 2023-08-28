@@ -11,6 +11,14 @@ const New = () => {
     },[])
     const NewList = useSelector((state)=>state.task.New);
 
+ const DeleteItem =(id)=>{
+     DeleteToDO(id).then((r)=>{
+         if (r===true){
+             TaskListByStatus("New")
+         }
+     })
+ }
+
 
     return (
         <Fragment>
@@ -43,8 +51,8 @@ const New = () => {
                                         <p className="m-0 animated fadeInUp p-0">
                                             <AiOutlineCalendar/>{item.createDate}
                                             <a  className="icon-nav text-primary mx-1"><AiOutlineEdit /></a>
-                                            <a onClick={()=>DeleteToDO(item._id)} className="icon-nav text-danger mx-1"><AiOutlineDelete /></a>
-                                            <a className="badge float-end bg-dark">{item.status}</a>
+                                            <a onClick={DeleteItem.bind(this,item._id)} className="icon-nav text-danger mx-1"><AiOutlineDelete /></a>
+                                            <a className="badge float-end bg-info">{item.status}</a>
                                         </p>
                                     </div>
                                 </div>
