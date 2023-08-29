@@ -11,6 +11,7 @@ import {MdOutlineCancelPresentation } from "react-icons/md";
 import {RiDashboardLine} from "react-icons/ri";
 import {BiCopyright} from "react-icons/bi";
 import {CiFacebook, CiLinkedin, CiPhone, CiTwitter} from "react-icons/ci";
+import {removeSessions} from "../../helper/SessionHelper";
 
 
 
@@ -21,7 +22,7 @@ const MasterLayout = (props) => {
     let contentRef,sideNavRef=useRef();
 
     const onLogout=()=>{
-        // removeSessions();
+         removeSessions();
     }
 
     const MenuBarClickHandler = () => {
