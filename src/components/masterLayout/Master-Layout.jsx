@@ -11,7 +11,7 @@ import {MdOutlineCancelPresentation } from "react-icons/md";
 import {RiDashboardLine} from "react-icons/ri";
 import {BiCopyright} from "react-icons/bi";
 import {CiFacebook, CiLinkedin, CiPhone, CiTwitter} from "react-icons/ci";
-import {removeSessions} from "../../helper/SessionHelper";
+import {getUserDetails, removeSessions} from "../../helper/SessionHelper";
 
 
 
@@ -57,12 +57,12 @@ const MasterLayout = (props) => {
 
                     <div className="float-right h-auto d-flex">
                         <div className="user-dropdown">
-                            <img className="icon-nav-img icon-nav" src="https://scontent.fdac135-1.fna.fbcdn.net/v/t39.30808-6/302533629_584947676437581_3124422828536597992_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeFA-MViQsfG-bv5mZNwFdZe90VkA1Vxzsn3RWQDVXHOyeu1-hjSMMyGhRVotGzpRSM&_nc_ohc=fB5mTCLh1soAX-0JeVj&_nc_ht=scontent.fdac135-1.fna&oh=00_AfBphmYQviabSRqCwD2cz5QK-dDsOzjmzdEWipP23ybSGw&oe=646DB47E "alt=""/>
+                            <img className="icon-nav-img icon-nav" src={getUserDetails()['photo']}alt="profilePhoto"/>
                             <div className="user-dropdown-content ">
                                 <div className="mt-4 text-center">
-                                    <img className="icon-nav-img" src="https://scontent.fdac135-1.fna.fbcdn.net/v/t39.30808-6/302533629_584947676437581_3124422828536597992_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeFA-MViQsfG-bv5mZNwFdZe90VkA1Vxzsn3RWQDVXHOyeu1-hjSMMyGhRVotGzpRSM&_nc_ohc=fB5mTCLh1soAX-0JeVj&_nc_ht=scontent.fdac135-1.fna&oh=00_AfBphmYQviabSRqCwD2cz5QK-dDsOzjmzdEWipP23ybSGw&oe=646DB47E "alt=""/>
+                                    <img className="icon-nav-img" src={getUserDetails()['photo']}alt="profilePhoto"/>
                                     {/*<h6>{getUserDetails()['firstName']}</h6>*/}
-                                    <h6>ASRAFUL ALAM</h6>
+                                    <h6>{getUserDetails()['firstName']} {getUserDetails()['lastName']}</h6>
                                     <hr className="user-dropdown-divider  p-0"/>
                                 </div>
                                 <NavLink to="/Profile" className="side-bar-item">
