@@ -71,6 +71,7 @@ const Profile = () => {
                     <div className="card">
                         <div className="card-body">
                             <div className="container-fluid">
+
                                 <img ref={(input)=>userImgView=input}  className="icon-nav-img-lg" src= {ProfileData['photo']} alt="Profile Photo"/>
                                 <hr/>
                                 <div className="row">
