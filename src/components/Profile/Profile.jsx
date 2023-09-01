@@ -80,23 +80,23 @@ const Profile = () => {
                                     </div>
                                     <div className="col-4 p-2">
                                         <label>Email Address</label>
-                                        <input readOnly={true} defaultValue={ProfileData['email']} placeholder="User Email" className="form-control animated fadeInUp"  ref={(input)=>emailRef=input}type="email"/>
+                                        <input key={Date.now()} readOnly={true} defaultValue={ProfileData['email']} placeholder="User Email" className="form-control animated fadeInUp"  ref={(input)=>emailRef=input}type="email"/>
                                     </div>
                                     <div className="col-4 p-2">
                                         <label>First Name</label>
-                                        <input defaultValue={ProfileData['firstName']} placeholder="First Name" className="form-control animated fadeInUp" ref={(input)=>firstNameRef=input} type="text"/>
+                                        <input key={Date.now()} defaultValue={ProfileData['firstName']} placeholder="First Name" className="form-control animated fadeInUp" ref={(input)=>firstNameRef=input} type="text"/>
                                     </div>
                                     <div className="col-4 p-2">
                                         <label>Last Name</label>
-                                        <input defaultValue={ProfileData['lastName']} placeholder="Last Name" className="form-control animated fadeInUp"ref={(input)=>lastNameRef=input} type="text"/>
+                                        <input key={Date.now()} defaultValue={ProfileData['lastName']} placeholder="Last Name" className="form-control animated fadeInUp"ref={(input)=>lastNameRef=input} type="text"/>
                                     </div>
                                     <div className="col-4 p-2">
                                         <label>Mobile</label>
-                                        <input defaultValue={ProfileData['mobile']} placeholder="Mobile" className="form-control animated fadeInUp" ref={(input)=>mobileRef=input} type="mobile"/>
+                                        <input key={Date.now()} defaultValue={ProfileData['mobile']} placeholder="Mobile" className="form-control animated fadeInUp" ref={(input)=>mobileRef=input} type="mobile"/>
                                     </div>
                                     <div className="col-4 p-2">
                                         <label>Password</label>
-                                        <input defaultValue={ProfileData['password']} placeholder="User Password" className="form-control animated fadeInUp" ref={(input)=>passwordRef=input} type="password"/>
+                                        <input key={Date.now()} defaultValue={ProfileData['password']} placeholder="User Password" className="form-control animated fadeInUp" ref={(input)=>passwordRef=input} type="password"/>
                                     </div>
                                     <div className="col-4 p-2">
                                         <button onClick={UpdateMyProfile} className="btn w-100 float-end btn-primary animated fadeInUp">Update Profile</button>
