@@ -2,7 +2,7 @@ import axios from "axios";
 import {ErrorToast, SuccessToast} from "../helper/FormHelper";
 import store from "../redux/store/store";
 import {HideLoader, ShowLoader} from "../redux/state-slice/setting-slice";
-import {getToken, setToken, setUserDetails} from "../helper/SessionHelper";
+import {getToken, setOTP, setToken, setUserDetails} from "../helper/SessionHelper";
 import {SetCanceledTask, SetCompletedTask, SetNewTask, SetProgressTask} from "../redux/state-slice/task-slice";
 import {SetSummary} from "../redux/state-slice/summary-slice";
 import {SetProfile} from "../redux/state-slice/profile-slice";
@@ -194,7 +194,7 @@ export  function RegistrationRequest(email,firstName,lastName,mobile,password,ph
 export function GetProfileDetails(){
     store.dispatch(ShowLoader())
     let URL=BaseURL+"/profileDetails";
-    axios.get(URL,AxiosHeader).then((res)=>{
+   return  axios.get(URL,AxiosHeader).then((res)=>{
         store.dispatch(HideLoader())
         if(res.status===200){
             store.dispatch(SetProfile(res.data['data'][0]))
@@ -209,7 +209,6 @@ export function GetProfileDetails(){
 }
 
 export function ProfileUpdateRequest(email,firstName,lastName,mobile,password,photo){
-
     store.dispatch(ShowLoader())
 
     let URL=BaseURL+"/profileUpdate";
@@ -229,6 +228,80 @@ export function ProfileUpdateRequest(email,firstName,lastName,mobile,password,ph
         else{
             ErrorToast("Something Went Wrong")
             return  false;
+        }
+    }).catch((err)=>{
+        ErrorToast("Something Went Wrong")
+        store.dispatch(HideLoader())
+        return false;
+    });
+}
+
+
+// recover password send otp step -1
+export function RecoverVerifyEmailRequest(email){
+    store.dispatch(ShowLoader())
+
+    let URL= BaseURL+"/RecoverVerifyEmail"+email;
+
+    return axios.get(URL).then((res)=>{
+        store.dispatch(HideLoader())
+        if(res.status===200){
+            return true;
+        }
+        else{
+            ErrorToast("Something Went Wrong")
+        }
+    }).catch((err)=>{
+        ErrorToast("Something Went Wrong")
+        store.dispatch(HideLoader())
+    });
+
+}
+
+// recover password verify otp step 2
+export function RecoverVerifyOTPRequest(email, OTP){
+    store.dispatch(ShowLoader())
+
+    let URL= BaseURL+"/RecoverVerifyOTP"+email+"/"+OTP;
+
+    return axios.get(URL,AxiosHeader).then((res)=>{
+        store.dispatch(HideLoader())
+        if(res.status===200){
+            return true;
+        }
+        else{
+            ErrorToast("Something Went Wrong")
+        }
+    }).catch((err)=>{
+        ErrorToast("Something Went Wrong")
+        store.dispatch(HideLoader())
+    });
+}
+
+
+export function RecoverResetPassRequest (email, OTP,password ){
+    store.dispatch(ShowLoader())
+
+    let URL= BaseURL+"/RecoverResetPass";
+    let  PostBody = {email:email, OTP:OTP,password:password }
+
+
+
+    return axios.post(URL,PostBody).then((res)=>{
+        store.dispatch(HideLoader())
+        if(res.status===200){
+           if(res.data['status']==='fail') {
+               return false;
+           }
+           else {
+               setOTP(OTP)
+               SuccessToast("NEW PASSWORD CREATED");
+               return true;
+           }
+        }
+        else{
+            ErrorToast("Something Went Wrong");
+            return false;
         }
     }).catch((err)=>{
         ErrorToast("Something Went Wrong")

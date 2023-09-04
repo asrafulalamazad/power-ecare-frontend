@@ -16,6 +16,21 @@ class SessionHelper {
       return JSON.parse(localStorage.getItem("UserDetails"))
    }
 
+   setEmail(Email){
+      localStorage.setItem("Email", Email)
+   }
+
+   getEmail(){
+      return localStorage.getItem("Email")
+   }
+   setEmail(OTP){
+      localStorage.setItem("OTP", OTP)
+   }
+
+   getOTP(OTP){
+      return localStorage.getItem("OTP")
+   }
+
    removeSessions= ()=>{
       localStorage.clear();
       window.location.href="/"
@@ -25,4 +40,4 @@ class SessionHelper {
 
 
 
-export const {setToken, getToken, setUserDetails, getUserDetails, removeSessions} = new SessionHelper();
+export const {setEmail,getEmail,setOTP,getOTP, setToken, getToken, setUserDetails, getUserDetails, removeSessions} = new SessionHelper();
