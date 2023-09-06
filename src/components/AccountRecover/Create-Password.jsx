@@ -27,7 +27,7 @@ const CreatePassword = () => {
         else{
                 RecoverResetPassRequest(getEmail(),getOTP(),Password).then((result)=>{
                     if(result===true){
-                        navigate("/Login")
+                        navigate("/")
                     }
                 })
             }
