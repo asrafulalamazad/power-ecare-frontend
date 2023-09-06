@@ -44,7 +44,7 @@ const CreatePassword = () => {
                             <h4>SET NEW PASSWORD</h4>
                             <br/>
                             <label>Your email address</label>
-                            <input readOnly={true} placeholder="User Email" className="form-control animated fadeInUp" type="email"/>
+                            <input readOnly={true} defaultValue={getEmail()} placeholder="User Email" className="form-control animated fadeInUp" type="email"/>
                             <br/>
                             <label>New Password</label>
                             <input ref={(input)=>PasswordRef =input}   placeholder="New Password" className="form-control animated fadeInUp" type="password"/>

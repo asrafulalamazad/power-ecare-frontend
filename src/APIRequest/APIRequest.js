@@ -2,7 +2,7 @@ import axios from "axios";
 import {ErrorToast, SuccessToast} from "../helper/FormHelper";
 import store from "../redux/store/store";
 import {HideLoader, ShowLoader} from "../redux/state-slice/setting-slice";
-import {getToken, setOTP, setToken, setUserDetails} from "../helper/SessionHelper";
+import {getToken, setEmail, setOTP, setToken, setUserDetails} from "../helper/SessionHelper";
 import {SetCanceledTask, SetCompletedTask, SetNewTask, SetProgressTask} from "../redux/state-slice/task-slice";
 import {SetSummary} from "../redux/state-slice/summary-slice";
 import {SetProfile} from "../redux/state-slice/profile-slice";
@@ -69,7 +69,7 @@ export function TaskListByStatus(Status){
 export function SummaryRequest(){
     store.dispatch(ShowLoader())
     let URL=BaseURL+"/taskStatusCount";
-   return  axios.get(URL,AxiosHeader).then((res)=>{
+    return  axios.get(URL,AxiosHeader).then((res)=>{
         store.dispatch(HideLoader())
         if(res.status===200){
             store.dispatch(SetSummary(res.data['data']))
@@ -144,8 +144,8 @@ export function LoginRequest(email,password ){
         } else {
             ErrorToast("Invalid email or Password")
             return false;
-            }
-        }).catch((err)=>{
+        }
+    }).catch((err)=>{
 
         store.dispatch(HideLoader());
         ErrorToast("Something Wrong")
@@ -161,8 +161,8 @@ export  function RegistrationRequest(email,firstName,lastName,mobile,password,ph
     let URL= BaseURL+"/registration"
     let  PostBody = {email:email, firstName:firstName, lastName:lastName,mobile:mobile,password:password,photo:photo}
 
-   return  axios.post(URL,PostBody).then((res)=>{
-       store.dispatch(HideLoader());
+    return  axios.post(URL,PostBody).then((res)=>{
+        store.dispatch(HideLoader());
 
         if(res.status===200){
             if (res.data['status']==="fail"){
@@ -176,16 +176,16 @@ export  function RegistrationRequest(email,firstName,lastName,mobile,password,ph
                 }
             }
 
-        else {
+            else {
 
-           SuccessToast("Registration Success")
-            return true;
-         }
+                SuccessToast("Registration Success")
+                return true;
+            }
         }
     }).catch((err)=>{
 
-       store.dispatch(HideLoader());
-       ErrorToast("Something Wrong")
+        store.dispatch(HideLoader());
+        ErrorToast("Something Wrong")
         return false;
     })
 }
@@ -194,7 +194,7 @@ export  function RegistrationRequest(email,firstName,lastName,mobile,password,ph
 export function GetProfileDetails(){
     store.dispatch(ShowLoader())
     let URL=BaseURL+"/profileDetails";
-   return  axios.get(URL,AxiosHeader).then((res)=>{
+    return  axios.get(URL,AxiosHeader).then((res)=>{
         store.dispatch(HideLoader())
         if(res.status===200){
             store.dispatch(SetProfile(res.data['data'][0]))
@@ -241,19 +241,28 @@ export function ProfileUpdateRequest(email,firstName,lastName,mobile,password,ph
 export function RecoverVerifyEmailRequest(email){
     store.dispatch(ShowLoader())
 
-    let URL= BaseURL+"/RecoverVerifyEmail"+email;
-
+    let URL= BaseURL+"/RecoverVerifyEmail/"+email;
     return axios.get(URL).then((res)=>{
         store.dispatch(HideLoader())
         if(res.status===200){
-            return true;
+            if (res.data['status']==='fail'){
+                ErrorToast('mail not found')
+                return false
+            }else
+            {
+                setEmail(email);
+                SuccessToast("A 6 Digit verification code has been sent to your email address. ");
+                return true;
+            }
         }
         else{
             ErrorToast("Something Went Wrong")
+            return false
         }
     }).catch((err)=>{
         ErrorToast("Something Went Wrong")
-        store.dispatch(HideLoader())
+        store.dispatch(HideLoader());
+        return false;
     });
 
 }
@@ -262,12 +271,22 @@ export function RecoverVerifyEmailRequest(email){
 export function RecoverVerifyOTPRequest(email, OTP){
     store.dispatch(ShowLoader())
 
-    let URL= BaseURL+"/RecoverVerifyOTP"+email+"/"+OTP;
+    let URL= BaseURL+"/RecoverVerifyOTP/"+email+"/"+OTP;
 
-    return axios.get(URL,AxiosHeader).then((res)=>{
+    return axios.get(URL).then((res)=>{
         store.dispatch(HideLoader())
         if(res.status===200){
-            return true;
+
+
+            if (res.data['status']==='fail'){
+                ErrorToast(res.data['data']);
+                return false;
+            }
+            else {
+                setOTP(OTP);
+                SuccessToast('OTP Verification Success')
+                return true;
+            }
         }
         else{
             ErrorToast("Something Went Wrong")
@@ -282,7 +301,7 @@ export function RecoverVerifyOTPRequest(email, OTP){
 export function RecoverResetPassRequest (email, OTP,password ){
     store.dispatch(ShowLoader())
 
-    let URL= BaseURL+"/RecoverResetPass";
+    let URL= BaseURL+"/RecoverResetPass/";
     let  PostBody = {email:email, OTP:OTP,password:password }
 
 
@@ -290,14 +309,14 @@ export function RecoverResetPassRequest (email, OTP,password ){
     return axios.post(URL,PostBody).then((res)=>{
         store.dispatch(HideLoader())
         if(res.status===200){
-           if(res.data['status']==='fail') {
-               return false;
-           }
-           else {
-               setOTP(OTP)
-               SuccessToast("NEW PASSWORD CREATED");
-               return true;
-           }
+            if(res.data['status']==='fail') {
+                return false;
+            }
+            else {
+                setOTP(OTP)
+                SuccessToast("NEW PASSWORD CREATED");
+                return true;
+            }
         }
         else{
             ErrorToast("Something Went Wrong");
