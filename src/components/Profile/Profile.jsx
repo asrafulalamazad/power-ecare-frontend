@@ -37,9 +37,9 @@ const Profile = () => {
       let password= passwordRef.value;
       let photo= userImgView.src;
 
-      // if (IsEmail(email)){
-      //     ErrorToast("Valid email needed")
-      // }
+      if (IsEmail(email)){
+          ErrorToast("Valid email needed")
+      }
        if (IsEmpty(firstName)){
           ErrorToast("First name needed")
       }
